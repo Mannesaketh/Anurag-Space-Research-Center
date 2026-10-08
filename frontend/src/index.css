@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..800;1,300..800&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  --background: #f5f6f8;
+  --foreground: #1b2f4e;
+  --border: #e5e9ef;
+  --primary: #1c3457;
+  --primary-foreground: #ffffff;
+  font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--foreground);
+  background: var(--background);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body, button, input, select, textarea {
+  font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+@layer base {
+  button:not(:disabled), select, summary { cursor: pointer; }
+  button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+  button:focus-visible, a:focus-visible { outline: 2px solid #6e8fa6; outline-offset: 4px; }
+}
+
+.mission-progress { appearance: none; overflow: hidden; border: 0; border-radius: 999px; background: #1c345712; }
+.mission-progress::-webkit-progress-bar { border-radius: 999px; background: #1c345712; }
+.mission-progress::-webkit-progress-value { border-radius: 999px; background: #6b887c; transition: width 250ms; }
+.mission-progress::-moz-progress-bar { border-radius: 999px; background: #6b887c; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-progress::-webkit-progress-value { transition: none; }
+  @layer base {
+    button, a, input, select, textarea { transition: none !important; }
+  }
+}

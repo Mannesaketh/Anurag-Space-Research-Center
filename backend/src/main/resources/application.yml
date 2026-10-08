@@ -1,0 +1,47 @@
+server:
+  port: ${BACKEND_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+spring:
+  application:
+    name: anurag-space-research-center
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:anurag_research}?sslMode=${DATABASE_SSL_MODE:PREFERRED}&allowPublicKeyRetrieval=${DATABASE_ALLOW_PUBLIC_KEY_RETRIEVAL:true}&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&characterEncoding=UTF-8}
+    username: ${DATABASE_USER:anurag}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 3MB
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${SMTP_STARTTLS:false}
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+app:
+  jwt-secret: ${JWT_SECRET}
+  cookie-secure: ${COOKIE_SECURE:true}
+  frontend-url: ${FRONTEND_URL:${RENDER_EXTERNAL_URL:http://localhost:3000}}
+  allowed-origins: ${ALLOWED_ORIGINS:${RENDER_EXTERNAL_URL:http://localhost:3000}}
+  developer-email: ${DEVELOPER_EMAIL:}
+  google-client-id: ${GOOGLE_CLIENT_ID:985258970603-bj0jdb6q98u455c60fjhorh1n9opqbqn.apps.googleusercontent.com}
+  firebase-project-id: ${FIREBASE_PROJECT_ID:figma-make-app-2026}
+  extra-allowed-emails: ${EXTRA_ALLOWED_EMAILS:}
+  mail-from: ${MAIL_FROM:noreply@anurag.edu.in}

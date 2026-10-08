@@ -1,0 +1,46 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: anurag_research
+      MYSQL_USER: anurag
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in backend/.env}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - research-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u anurag -p\"$$MYSQL_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "127.0.0.1:8025:8025"
+  api:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    environment:
+      DATABASE_URL: jdbc:mysql://mysql:3306/anurag_research?sslMode=DISABLED&allowPublicKeyRetrieval=true&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&characterEncoding=UTF-8
+      DATABASE_USER: anurag
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?Set a random JWT_SECRET of at least 32 bytes}
+      DEVELOPER_EMAIL: ${DEVELOPER_EMAIL:?Set your university email}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID-985258970603-bj0jdb6q98u455c60fjhorh1n9opqbqn.apps.googleusercontent.com}
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-figma-make-app-2026}
+      EXTRA_ALLOWED_EMAILS: ${EXTRA_ALLOWED_EMAILS:-}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080,http://localhost:8443}
+      COOKIE_SECURE: "false"
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+volumes:
+  research-data:
